@@ -19,6 +19,9 @@ class Game
     @player_two = create_player(:yellow, input_name(2))
     @current_player = @player_one
     take_turn
+    if board.over? # rubocop:disable Style/GuardClause,Style/IfUnlessModifier
+      print 'done'
+    end
   end
 
   def take_turn

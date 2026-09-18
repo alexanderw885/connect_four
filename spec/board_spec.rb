@@ -81,4 +81,37 @@ describe Board do
       expect { board.make_move(col + 1, player) }.to change { board.state[0][col] }.to(player)
     end
   end
+
+  describe '#over?' do
+  end
+
+  describe '#check_row' do
+    subject(:board) { described_class.new(3, 3, 2) }
+
+    let(:player) { { name: 'player_name', color: :orange } }
+
+    it 'returns false when row has no tokens' do
+      expect(board.check_row(0)).to be false
+    end
+
+    it 'returns winning player when entire row has tokens' do
+      board.state[0][0] = player
+      board.state[0][1] = player
+      board.state[0][2] = player
+      expect(board.check_row(0)).to eq player
+    end
+
+    it 'returns winning player when row of tokens exactly match winning length' do
+      board.state[1][0] = player
+      board.state[1][1] = player
+      expect(board.check_row(1)).to eq player
+    end
+
+    it 'returns false if long streak of tokens contain multiple players' do
+      board.state[2][0] = player
+      board.state[2][2] = player
+      board.state[2][1] = { name: 'wrong name', color: :orange }
+      expect(board.check_row(2)).to be false
+    end
+  end
 end
